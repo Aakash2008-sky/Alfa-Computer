@@ -1,0 +1,95 @@
+
+CREATE DATABASE IF NOT EXISTS alfa_computer
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_general_ci;
+
+USE alfa_computer;
+
+-- 1. Admin Users
+CREATE TABLE IF NOT EXISTS users (
+    id INT NOT NULL AUTO_INCREMENT,
+    username VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY unique_username (username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- 2. Courses
+CREATE TABLE IF NOT EXISTS courses (
+    id INT NOT NULL AUTO_INCREMENT,
+    course_name VARCHAR(150) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY unique_course_name (course_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- Default Courses
+INSERT IGNORE INTO courses (course_name) VALUES
+('Computer Basics'),
+('Office Automation'),
+('Web Designing'),
+('Python Programming'),
+('Python with AI'),
+('Graphic Designing'),
+('Tally with GST'),
+('Web Tech.. & Posing');
+
+
+-- 3. Students
+CREATE TABLE IF NOT EXISTS students (
+    id INT NOT NULL AUTO_INCREMENT,
+    first_name VARCHAR(100) NOT NULL,
+    middle_name VARCHAR(100) DEFAULT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    mobile VARCHAR(20) NOT NULL,
+    joining_date DATE NOT NULL,
+    course VARCHAR(150) NOT NULL,
+    total_fees DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY idx_students_mobile (mobile),
+    KEY idx_students_course (course),
+    KEY idx_students_joining_date (joining_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- 4. Student Payments
+CREATE TABLE IF NOT EXISTS payments (
+    id INT NOT NULL AUTO_INCREMENT,
+    student_id INT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    payment_date DATE NOT NULL,
+    payment_method ENUM('CASH','UPI') NOT NULL,
+    note VARCHAR(255) DEFAULT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY idx_payments_student (student_id),
+    KEY idx_payments_date (payment_date),
+    CONSTRAINT fk_payments_student
+        FOREIGN KEY (student_id)
+        REFERENCES students(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- 5. Student Discounts
+CREATE TABLE IF NOT EXISTS student_discounts (
+    id INT NOT NULL AUTO_INCREMENT,
+    student_id INT NOT NULL,
+    discount_amount DECIMAL(10,2) NOT NULL,
+    discount_type ENUM('amount','percent') NOT NULL DEFAULT 'amount',
+    discount_value DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    note VARCHAR(255) DEFAULT NULL,
+    discount_date DATE NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY idx_student_discounts_student (student_id),
+    KEY idx_student_discounts_date (discount_date),
+    CONSTRAINT fk_student_discounts_student
+        FOREIGN KEY (student_id)
+        REFERENCES students(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
