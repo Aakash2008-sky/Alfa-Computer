@@ -1,0 +1,51 @@
+ALFA-COMPUTER-FEES/
+│
+├── index.php                  ← Login
+├── signup.php                 ← Sign Up
+├── dashboard.php              ← Dashboard
+├── students.php               ← Students List
+├── add-student.php            ← Add Student
+├── student-profile.php        ← View Student
+├── edit-student.php           ← Edit Student
+├── settings.php               ← Settings
+│
+├── config/
+│   └── database.php           ← MySQL Connection
+│
+├── auth/
+│   ├── login.php              ← Login Processing
+│   ├── signup.php             ← Signup Processing
+│   └── logout.php             ← Logout / Session Destroy
+│
+├── students/
+│   ├── create.php             ← Insert Student
+│   ├── update.php             ← Update Student
+│   ├── delete.php             ← Remove Student
+│   └── fetch.php              ← Fetch Students
+│
+├── includes/
+│   ├── header.php             ← Common Header
+│   ├── sidebar.php            ← Sidebar
+│   ├── navbar.php             ← Topbar
+│   ├── footer.php             ← Footer
+│   └── auth-check.php         ← Login Session Check
+│
+├── assets/
+│   ├── css/
+│   │   ├── style.css
+│   │   ├── auth.css
+│   │   ├── dashboard.css
+│   │   ├── students.css
+│   │   └── responsive.css
+│   │
+│   ├── js/
+│   │   ├── main.js
+│   │   ├── auth.js
+│   │   ├── dashboard.js
+│   │   └── students.js
+│   │
+│   └── images/
+│       └── alfa-logo.png
+│
+└── database/
+    └── alfa_computer.sql      ← Database Schema
